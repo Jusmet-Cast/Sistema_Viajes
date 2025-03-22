@@ -1,4 +1,4 @@
-import ui
+
 import db
 from ui import mostrar_login
 """""
@@ -13,8 +13,6 @@ def main():
     else:
         print("No se pudo conectar a la base de datos.")
 
-
+"""""
 if __name__ == "__main__":
-
-    mostrar_usuarios()
-    main()
+    mostrar_login()

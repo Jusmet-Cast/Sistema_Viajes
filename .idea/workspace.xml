@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="436294e0-fff4-4f6a-bdb1-0964cf616471" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/data.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/data.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reportes.py" beforeDir="false" afterPath="$PROJECT_DIR$/reports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +43,7 @@
     "Python.auth.executor": "Run",
     "Python.db.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.models.executor": "Run",
     "Python.ui.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -68,6 +74,55 @@
       <option name="presentableId" value="Default" />
       <updated>1742492036645</updated>
     </task>
+    <task id="LOCAL-00001" summary="Reformateo de UI orientado a los FORMULARIOS. Primer UI (login) listo.">
+      <option name="closed" value="true" />
+      <created>1742604469540</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1742604469540</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Implementación exclusiva de la logica del login">
+      <option name="closed" value="true" />
+      <created>1742604550466</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1742604550466</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Seguimiento y testeo de las los modulos">
+      <option name="closed" value="true" />
+      <created>1742604594989</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742604594989</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Mejora del módulo para el manejo de la conexión y operaciones con la DB">
+      <option name="closed" value="true" />
+      <created>1742605267882</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742605267882</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Implementación del modulo de models.py para definición de estructura del manejo de datos">
+      <option name="closed" value="true" />
+      <created>1742606682935</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742606682935</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Reformateo de UI orientado a los FORMULARIOS. Primer UI (login) listo." />
+    <MESSAGE value="Implementación exclusiva de la logica del login" />
+    <MESSAGE value="Seguimiento y testeo de las los modulos" />
+    <MESSAGE value="Mejora del módulo para el manejo de la conexión y operaciones con la DB" />
+    <MESSAGE value="Implementación del modulo de models.py para definición de estructura del manejo de datos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementación del modulo de models.py para definición de estructura del manejo de datos" />
   </component>
 </project>
