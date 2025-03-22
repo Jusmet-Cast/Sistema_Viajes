@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 
-#   Conecta a la base de datos.
+# Conecta a la base de datos.
 def conectar_db():
     try:
         conexion = sqlite3.connect('db/data.db')
