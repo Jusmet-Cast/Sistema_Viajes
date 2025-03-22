@@ -8,24 +8,8 @@ def ejecutar_esquema_ui():
         db.cerrar_conexion(conexion)
         resultado_label.config(text="Esquema ejecutado.")
 
-def insertar_usuario_ui():
-    conexion = db.conectar_db()
-    if conexion:
-        db.ejecutar_query(conexion, "INSERT INTO Usuario (nombre, email, password, rol) VALUES (?, ?, ?, ?)", ("Usuario de prueba", "prueba@email.com", "password123", "Gerente de tienda"))
-        db.cerrar_conexion(conexion)
-        resultado_label.config(text="Usuario insertado.")
-
-def consultar_usuarios_ui():
-    conexion = db.conectar_db()
-    if conexion:
-        cursor = db.ejecutar_query(conexion, "SELECT * FROM Usuario")
-        if cursor:
-            resultados = db.obtener_resultados(cursor)
-            resultado_label.config(text=str(resultados))
-        db.cerrar_conexion(conexion)
-
-def crear_ventana_principal():
-    global resultado_label  # Para poder modificar la etiqueta desde las funciones
+# Implementa la interfaz de login.
+def mostrar_login():
     ventana = tk.Tk()
     ventana.title("Sistema de Viajes")
 
