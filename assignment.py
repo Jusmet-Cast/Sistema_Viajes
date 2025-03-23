@@ -1,12 +1,11 @@
+
 import sqlite3
 from db import conectar_db, ejecutar_query
-
 
 # Válida que la distancia esté entre 1 y 50 km.
 def validar_distancia(distancia_km):
     if not (1 <= distancia_km <= 50):
         raise ValueError("La distancia debe estar entre 1 y 50 km.")
-
 
 # Verifica si un colaborador existe en la base de datos.
 def existe_colaborador(colaborador_id):
@@ -14,20 +13,17 @@ def existe_colaborador(colaborador_id):
     resultados = ejecutar_query(conectar_db(), query, (colaborador_id,))
     return bool(resultados)
 
-
 # Verifica si una sucursal existe en la base de datos.
 def existe_sucursal(sucursal_id):
     query = "SELECT 1 FROM Sucursal WHERE id = ?"
     resultados = ejecutar_query(conectar_db(), query, (sucursal_id,))
     return bool(resultados)
 
-
 # Verifica si ya existe una asignación para el colaborador y la sucursal.
 def existe_asignacion(colaborador_id, sucursal_id):
     query = "SELECT 1 FROM AsignacionSucursal WHERE colaborador_id = ? AND sucursal_id = ?"
     resultados = ejecutar_query(conectar_db(), query, (colaborador_id, sucursal_id))
     return bool(resultados)
-
 
 # Asigna una sucursal a un colaborador, validando la información.
 def asignar_sucursal_a_colaborador(colaborador_id, sucursal_id, distancia_km):
@@ -64,7 +60,6 @@ def asignar_sucursal_a_colaborador(colaborador_id, sucursal_id, distancia_km):
     except sqlite3.Error as e:
         print(f"Error en la base de datos: {e}")
         return False
-
 
 # Obtiene todas las sucursales asignadas a un colaborador.
 def obtener_sucursales_colaborador(colaborador_id):
