@@ -8,7 +8,7 @@ def mostrar_login():
     ventana = tk.Tk()
     ventana.title("Login")
 
-    # Centrar la ventana en la pantalla
+    # Centrar la ventana en la pantalla.
     ancho_ventana = 300
     alto_ventana = 200
     x_pos = (ventana.winfo_screenwidth() // 2) - (ancho_ventana // 2)
