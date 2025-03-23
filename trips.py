@@ -111,6 +111,6 @@ def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids
         return False
 
 
-# Genera un reporte de viajes por rango de fechas y transportista.
+# Genera un reporte de viajes por rango de fechas y transportista. (OJITO REVISAR SI LO DEJAMOS ACA O MOVEMOS A REPORTS)
 def generar_reporte_viajes(fecha_inicio, fecha_fin, transportista_id):
     return generar_reporte_viajes_db(fecha_inicio, fecha_fin, transportista_id)
