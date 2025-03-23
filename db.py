@@ -89,9 +89,20 @@ def registrar_viaje_db(fecha, sucursal_id, transportista_id, usuario_registro_id
 
 # Asocia colaboradores a un viaje en la DB.
 def asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids):
-    for colaborador_id in colaboradores_ids:
-        query = "INSERT INTO ViajeColaborador (viaje_id, colaborador_id) VALUES (?, ?)"
-        ejecutar_query(conectar_db(), query, (viaje_id, colaborador_id))
+    try:
+        conexion = conectar_db()
+        with conexion:
+            cursor = conexion.cursor()
+            for colaborador_id in colaboradores_ids:
+                cursor.execute(
+                    "INSERT INTO ViajeColaborador (viaje_id, colaborador_id) VALUES (?, ?)",
+                    (viaje_id, colaborador_id)
+                )
+        print("Colaboradores asociados al viaje correctamente.")
+    except sqlite3.Error as e:
+        print(f"Error al asociar colaboradores al viaje: {e}")
+        raise e
+
 
 # Genera un reporte de viajes por rango de fechas y transportista.
 def generar_reporte_viajes_db(fecha_inicio, fecha_fin, transportista_id):
