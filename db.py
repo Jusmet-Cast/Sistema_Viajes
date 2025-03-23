@@ -93,7 +93,7 @@ def asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids):
         query = "INSERT INTO ViajeColaborador (viaje_id, colaborador_id) VALUES (?, ?)"
         ejecutar_query(conectar_db(), query, (viaje_id, colaborador_id))
 
-# Genera un reporte de viajes por rango de fechas y transportista. (OJITO REVISAR SI LO DEJAMOS ACA O MOVEMOS A REPORTS)
+# Genera un reporte de viajes por rango de fechas y transportista.
 def generar_reporte_viajes_db(fecha_inicio, fecha_fin, transportista_id):
     query = """
     SELECT v.fecha, s.nombre AS sucursal, t.nombre AS transportista, v.distancia_total, GROUP_CONCAT(c.nombre, ', ') AS colaboradores
