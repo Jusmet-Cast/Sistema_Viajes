@@ -154,6 +154,14 @@ def mostrar_registrar_viaje(usuario, ventana_menu):
     colaboradores_listbox = tk.Listbox(frame_principal, selectmode=tk.MULTIPLE)
     colaboradores_listbox.pack(pady=5)
 
+    #  Label para mostrar la suma de distancias.
+    distancia_label = tk.Label(frame_principal, text="Suma de distancias: 0 km")
+    distancia_label.pack(pady=5)
+
+    #  Label para mostrar la tarifa total.
+    tarifa_label = tk.Label(frame_principal, text="Tarifa total: L.0.00")
+    tarifa_label.pack(pady=5)
+
     #  Función para actualizar la lista de colaboradores según la sucursal seleccionada.
     def actualizar_colaboradores(*args):
         colaboradores_listbox.delete(0, tk.END)  # Limpiar la lista actual
