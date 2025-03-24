@@ -76,17 +76,3 @@ def asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids):
     except sqlite3.Error as e:
         print(f"Error al asociar colaboradores al viaje: {e}")
         raise e
-
-# Genera un reporte de viajes por rango de fechas y transportista.
-def generar_reporte_viajes_db(fecha_inicio, fecha_fin, transportista_id):
-    query = """
-    SELECT v.fecha, s.nombre AS sucursal, t.nombre AS transportista, v.distancia_total, GROUP_CONCAT(c.nombre, ', ') AS colaboradores
-    FROM Viaje v
-    JOIN Sucursal s ON v.sucursal_id = s.id
-    JOIN Transportista t ON v.transportista_id = t.id
-    JOIN ViajeColaborador vc ON v.id = vc.viaje_id
-    JOIN Colaborador c ON vc.colaborador_id = c.id
-    WHERE v.fecha BETWEEN ? AND ? AND v.transportista_id = ?
-    GROUP BY v.id
-    """
-    return ejecutar_query(conectar_db(), query, (fecha_inicio, fecha_fin, transportista_id))

@@ -6,8 +6,7 @@ from db import (
     ejecutar_query,
     obtener_distancia_sucursal_colaborador,
     registrar_viaje_db,
-    asociar_colaboradores_a_viaje_db,
-    generar_reporte_viajes_db,
+    asociar_colaboradores_a_viaje_db
 )
 
 
@@ -79,7 +78,3 @@ def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids
     except sqlite3.Error as e:
         print(f"Error en la base de datos: {e}")
         raise Exception(f"Error en la base de datos: {e}")  # Relanzar la excepción para que la interfaz la capture
-
-# Genera un reporte de viajes por rango de fechas y transportista.
-def generar_reporte_viajes(fecha_inicio, fecha_fin, transportista_id):
-    return generar_reporte_viajes_db(fecha_inicio, fecha_fin, transportista_id)
