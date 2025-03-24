@@ -1,3 +1,4 @@
+
 import sqlite3
 
 # Conecta a la base de datos data.db.

@@ -11,7 +11,6 @@ from db import (
 )
 
 
-
 # Válida que la distancia esté entre 1 y 50 km.
 def validar_distancia(distancia_km):
     if not (1 <= distancia_km <= 50):

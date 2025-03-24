@@ -8,7 +8,8 @@ from db import (
     obtener_distancia_sucursal_colaborador
 )
 from trips import registrar_viaje
-from assignment import asignar_sucursal_a_colaborador, obtener_sucursales_colaborador
+from assignment import asignar_sucursal_a_colaborador, existe_asignacion
+
 
 #  Implementa la interfaz de login.
 def mostrar_login():
@@ -103,7 +104,7 @@ def mostrar_menu_principal(usuario):
     # Botones para las opciones del menú.
     if usuario[4] == "Gerente de tienda":  # Validación de usuario con rol/perfil "Gerente de tienda".
         tk.Button(ventana_menu, text="Registrar Viaje", command=lambda: mostrar_registrar_viaje(usuario, ventana_menu)).pack(pady=5)
-        tk.Button(ventana_menu, text="Asignar Sucursal", command=lambda: print("Generar Asignación")).pack(pady=5)
+        tk.Button(ventana_menu, text="Asignar Sucursal", command=lambda: mostrar_asignar_sucursal(usuario, ventana_menu)).pack(pady=5)
         tk.Button(ventana_menu, text="Generar Reportes", command=lambda: print("Generar Reportes")).pack(pady=5)
     else:  # Opciones para otros usuarios.
         tk.Button(ventana_menu, text="Asignar Sucursal", command=lambda: print("Generar Asignación")).pack(pady=5)
@@ -129,8 +130,8 @@ def mostrar_menu_principal(usuario):
         frame_botones_salida,
         text="Regresar al Login",
         command=regresar_al_login,  # Llama a la función para redirigir al login.
-        bg="yellow",  # Fondo amarillo.
-        fg="black"  # Texto negro.
+        bg="orange",  # Fondo amarillo.
+        fg="white"  # Texto negro.
     ).pack(side=tk.LEFT, padx=10)  # Alineación horizontal con espacio entre botones.
 
     # Botón de salir.
@@ -305,3 +306,113 @@ def mostrar_registrar_viaje(usuario, ventana_menu):
     ventana_viaje.grab_set()
     ventana_viaje.focus_set()
     ventana_viaje.wait_window()
+
+#  Implementa la interfaz de la ventana para asignar sucursales.
+def mostrar_asignar_sucursal(usuario, ventana_menu):
+    ventana_asignar = tk.Toplevel()  # Usar Toplevel para ventanas secundarias.
+    ventana_asignar.title("Asignar Sucursal")
+
+    #  Centrar la ventana en la pantalla.
+    ancho_ventana = 300
+    alto_ventana = 350
+    x_pos = (ventana_asignar.winfo_screenwidth() // 2) - (ancho_ventana // 2)
+    y_pos = (ventana_asignar.winfo_screenheight() // 2) - (alto_ventana // 2)
+    ventana_asignar.geometry(f"{ancho_ventana}x{alto_ventana}+{x_pos}+{y_pos}")
+
+    #  Ocultar la ventana del menú principal.
+    ventana_menu.withdraw()
+
+    #  Frame principal.
+    frame_principal = tk.Frame(ventana_asignar)
+    frame_principal.pack(pady=20)
+
+    #  Obtener datos de la base de datos.
+    colaboradores = ejecutar_query(conectar_db(), "SELECT id, nombre FROM Colaborador")
+    sucursales = ejecutar_query(conectar_db(), "SELECT id, nombre FROM Sucursal")
+
+    #  Variables para almacenar las selecciones.
+    colaborador_seleccionado = tk.StringVar(ventana_asignar)
+    sucursal_seleccionada = tk.StringVar(ventana_asignar)
+
+    #  Campo para seleccionar colaborador.
+    tk.Label(frame_principal, text="Colaborador:").pack(pady=5)
+    colaborador_menu = tk.OptionMenu(frame_principal, colaborador_seleccionado, *[f"{c[0]} - {c[1]}" for c in colaboradores])
+    colaborador_menu.pack(pady=5)
+
+    #  Campo para seleccionar sucursal.
+    tk.Label(frame_principal, text="Sucursal:").pack(pady=5)
+    sucursal_menu = tk.OptionMenu(frame_principal, sucursal_seleccionada, *[f"{s[0]} - {s[1]}" for s in sucursales])
+    sucursal_menu.pack(pady=5)
+
+    #  Campo para ingresar la distancia.
+    tk.Label(frame_principal, text="Distancia (km):").pack(pady=5)
+    distancia_entry = tk.Entry(frame_principal, width=10)
+    distancia_entry.pack(pady=5)
+
+    #  Función para asignar la sucursal al colaborador.
+    def guardar_asignacion():
+
+        if not colaborador_seleccionado.get():
+            messagebox.showerror("Error", "Debe seleccionar un colaborador.")
+            return
+        if not sucursal_seleccionada.get():
+            messagebox.showerror("Error", "Debe seleccionar una sucursal.")
+            return
+        if not distancia_entry.get():
+            messagebox.showerror("Error", "Debe ingresar una distancia.")
+            return
+
+        try:
+            # Obtener los valores seleccionados.
+            colaborador_id = int(colaborador_seleccionado.get().split(" - ")[0])
+            sucursal_id = int(sucursal_seleccionada.get().split(" - ")[0])
+            distancia_km = float(distancia_entry.get())
+
+            # Validar que la distancia esté entre 1 y 50 km.
+            if not (1 <= distancia_km <= 50):
+                raise ValueError("La distancia debe estar entre 1 y 50 km.")
+
+            # Verificar si el colaborador ya tiene asignada esta sucursal.
+            if existe_asignacion(colaborador_id, sucursal_id):
+                raise ValueError("El colaborador ya tiene asignada esta sucursal.")
+
+            # Intentar asignar la sucursal al colaborador.
+            if asignar_sucursal_a_colaborador(colaborador_id, sucursal_id, distancia_km):
+                messagebox.showinfo("Éxito", "Sucursal asignada correctamente.")
+                ventana_asignar.destroy()
+                ventana_menu.deiconify()  # Mostrar la ventana del menú principal.
+            else:
+                messagebox.showerror("Error", "No se pudo asignar la sucursal.")
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un problema: {str(e)}")
+
+    tk.Label(frame_principal, text="").pack(pady=25)  # Etiqueta vacía para crear espacio (estética).
+
+    #  Botón para guardar la asignación.
+    tk.Button(
+        frame_principal,
+        text="Guardar Asignación",
+        command=guardar_asignacion,
+        bg="green",
+        fg="white"
+    ).pack(side=tk.LEFT, padx=15)
+
+    #  Botón para cancelar.
+    def cancelar():
+        ventana_asignar.destroy()
+        ventana_menu.deiconify()  # Mostrar la ventana del menú principal.
+
+    tk.Button(
+        frame_principal,
+        text="Cancelar",
+        command=cancelar,
+        bg="orange",
+        fg="white"
+    ).pack(side=tk.LEFT, padx=10)
+
+    #  Bloquear la ventana principal.
+    ventana_asignar.grab_set()
+    ventana_asignar.focus_set()
+    ventana_asignar.wait_window()
