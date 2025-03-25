@@ -28,22 +28,22 @@ def existe_asignacion(colaborador_id, sucursal_id):
 # Asigna una sucursal a un colaborador, validando la información.
 def asignar_sucursal_a_colaborador(colaborador_id, sucursal_id, distancia_km):
     try:
-        # Validar distancia
+        # Validar distancia.
         validar_distancia(distancia_km)
 
-        # Verificar si el colaborador existe
+        # Verificar si el colaborador existe.
         if not existe_colaborador(colaborador_id):
             raise ValueError("El colaborador no existe.")
 
-        # Verificar si la sucursal existe
+        # Verificar si la sucursal existe.
         if not existe_sucursal(sucursal_id):
             raise ValueError("La sucursal no existe.")
 
-        # Verificar si ya existe la asignación
+        # Verificar si ya existe la asignación.
         if existe_asignacion(colaborador_id, sucursal_id):
             raise ValueError("El colaborador ya tiene asignada esta sucursal.")
 
-        # Insertar la asignación
+        # Insertar la asignación.
         query = "INSERT INTO AsignacionSucursal (colaborador_id, sucursal_id, distancia_km) VALUES (?, ?, ?)"
         filas_afectadas = ejecutar_query(conectar_db(), query, (colaborador_id, sucursal_id, distancia_km))
 

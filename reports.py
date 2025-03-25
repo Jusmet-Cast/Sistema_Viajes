@@ -1,18 +1,15 @@
 
 from db import ejecutar_query, conectar_db
 
-def generar_reporte_viajes(fecha_inicio: str, fecha_fin: str, transportista_id: int) -> list:
-    """
-    Genera un reporte de viajes realizados por un transportista en un rango de fechas.
-
-    Args:
-        fecha_inicio (str): Fecha de inicio en formato YYYY-MM-DD.
-        fecha_fin (str): Fecha de fin en formato YYYY-MM-DD.
-        transportista_id (int): ID del transportista.
-
-    Returns:
-        list: Lista de tuplas con los detalles de los viajes.
-    """
+#  Consulta para generar reportes.
+"""
+Aquí se combinan varias tablas para obtener la información completa:
+Sucursal s -> Se une con Viaje mediante sucursal_id, para obtener el nombre de la sucursal.
+Transportista t -> Se une con Viaje mediante transportista_id, para obtener el nombre del transportista.
+ViajeColaborador vc -> Relaciona los viajes con los colaboradores, permitiendo saber qué colaboradores participaron en cada viaje.
+Colaborador c -> Se une con ViajeColaborador para obtener el nombre de cada colaborador.
+"""
+def generar_reporte_viajes(fecha_inicio: str, fecha_fin: str, transportista_id: int):
     query = """
     SELECT v.fecha, s.nombre AS sucursal, t.nombre AS transportista, v.distancia_total, GROUP_CONCAT(c.nombre, ', ') AS colaboradores
     FROM Viaje v
@@ -25,6 +22,7 @@ def generar_reporte_viajes(fecha_inicio: str, fecha_fin: str, transportista_id: 
     """
     return ejecutar_query(conectar_db(), query, (fecha_inicio, fecha_fin, transportista_id))
 
-def calcular_total_a_pagar(reporte: list, tarifa_por_km: float) -> float:
+#  Obtiene el calculo del pago al transportista.
+def calcular_total_a_pagar(reporte: list, tarifa_por_km: float):
     total_km = sum(viaje[3] for viaje in reporte)  # Sumar las distancias totales.
     return total_km * tarifa_por_km

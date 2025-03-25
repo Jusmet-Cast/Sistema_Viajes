@@ -1,0 +1,7 @@
+# Dependencias principales
+Python>=3.13.2
+sqlite3>=3.45.3 # Ya incluido en Python
+
+# Dependencias para la interfaz gráfica (ui.py)
+tkinter>=8.6 # Ya incluido en Python
+tkcalendar>=1.5.0

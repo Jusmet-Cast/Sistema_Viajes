@@ -32,47 +32,9 @@ def ejecutar_query(conexion, query: str, parametros=()) -> list | int | None:
             cursor = conexion.cursor()
             cursor.execute(query, parametros)
             if query.strip().upper().startswith("SELECT"):
-                return cursor.fetchall()  # Devuelve los resultados para consultas SELECT
+                return cursor.fetchall()  # Devuelve los resultados para consultas SELECT.
             else:
-                return cursor.rowcount  # Devuelve el número de filas afectadas para INSERT, UPDATE, DELETE
+                return cursor.rowcount  # Devuelve el número de filas afectadas para INSERT, UPDATE, DELETE.
     except sqlite3.Error as e:
         print(f"Error al ejecutar la consulta: {e}")
         return None
-
-# Obtiene la distancia de una sucursal asignada a un colaborador.
-def obtener_distancia_sucursal_colaborador(colaborador_id, sucursal_id):
-    query = "SELECT distancia_km FROM AsignacionSucursal WHERE colaborador_id = ? AND sucursal_id = ?"
-    resultado = ejecutar_query(conectar_db(), query, (colaborador_id, sucursal_id))
-    return resultado[0][0] if resultado else None
-
-# Registra un viaje en la DB.
-def registrar_viaje_db(fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total):
-    try:
-        conexion = conectar_db()
-        with conexion:
-            cursor = conexion.cursor()
-            cursor.execute(
-                "INSERT INTO Viaje (fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total) VALUES (?, ?, ?, ?, ?)",
-                (fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total)
-            )
-            viaje_id = cursor.lastrowid  # Obtener el ID del viaje recién insertado
-            return viaje_id
-    except sqlite3.Error as e:
-        print(f"Error al registrar el viaje: {e}")
-        return None
-
-# Asocia colaboradores a un viaje en la DB.
-def asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids):
-    try:
-        conexion = conectar_db()
-        with conexion:
-            cursor = conexion.cursor()
-            for colaborador_id in colaboradores_ids:
-                cursor.execute(
-                    "INSERT INTO ViajeColaborador (viaje_id, colaborador_id) VALUES (?, ?)",
-                    (viaje_id, colaborador_id)
-                )
-        print("Colaboradores asociados al viaje correctamente.")
-    except sqlite3.Error as e:
-        print(f"Error al asociar colaboradores al viaje: {e}")
-        raise e

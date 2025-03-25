@@ -3,17 +3,46 @@ import sqlite3
 from datetime import datetime
 from db import (
     conectar_db,
-    ejecutar_query,
-    obtener_distancia_sucursal_colaborador,
-    registrar_viaje_db,
-    asociar_colaboradores_a_viaje_db
+    ejecutar_query
 )
 
+# Obtiene la distancia de una sucursal asignada a un colaborador.
+def obtener_distancia_sucursal_colaborador(colaborador_id, sucursal_id):
+    query = "SELECT distancia_km FROM AsignacionSucursal WHERE colaborador_id = ? AND sucursal_id = ?"
+    resultado = ejecutar_query(conectar_db(), query, (colaborador_id, sucursal_id))
+    return resultado[0][0] if resultado else None
 
-# Válida que la distancia esté entre 1 y 50 km.
-def validar_distancia(distancia_km):
-    if not (1 <= distancia_km <= 50):
-        raise ValueError("La distancia debe estar entre 1 y 50 km.")
+# Registra un viaje en la DB.
+def registrar_viaje_db(fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total):
+    try:
+        conexion = conectar_db()
+        with conexion:
+            cursor = conexion.cursor()
+            cursor.execute(
+                "INSERT INTO Viaje (fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total) VALUES (?, ?, ?, ?, ?)",
+                (fecha, sucursal_id, transportista_id, usuario_registro_id, distancia_total)
+            )
+            viaje_id = cursor.lastrowid  # Obtener el ID del viaje recién insertado.
+            return viaje_id
+    except sqlite3.Error as e:
+        print(f"Error al registrar el viaje: {e}")
+        return None
+
+# Asocia colaboradores a un viaje en la DB.
+def asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids):
+    try:
+        conexion = conectar_db()
+        with conexion:
+            cursor = conexion.cursor()
+            for colaborador_id in colaboradores_ids:
+                cursor.execute(
+                    "INSERT INTO ViajeColaborador (viaje_id, colaborador_id) VALUES (?, ?)",
+                    (viaje_id, colaborador_id)
+                )
+        print("Colaboradores asociados al viaje correctamente.")
+    except sqlite3.Error as e:
+        print(f"Error al asociar colaboradores al viaje: {e}")
+        raise e
 
 # Verifica si un colaborador ya tiene un viaje registrado para la fecha actual.
 def colaborador_tiene_viaje_en_fecha(colaborador_id, fecha):
@@ -34,19 +63,19 @@ def es_gerente_de_tienda(usuario_id):
 # Registra un viaje, validando todas las restricciones.
 def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids):
     try:
-        # Verificar si el usuario es gerente de tienda
+        # Verificar si el usuario es gerente de tienda.
         if not es_gerente_de_tienda(usuario_id):
             raise ValueError("Solo los gerentes de tienda pueden registrar viajes.")
 
-        # Obtener la fecha actual
+        # Obtener la fecha actual.
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
 
-        # Verificar que los colaboradores no tengan un viaje en la fecha actual
+        # Verificar que los colaboradores no tengan un viaje en la fecha actual.
         for colaborador_id in colaboradores_ids:
             if colaborador_tiene_viaje_en_fecha(colaborador_id, fecha_actual):
                 raise ValueError(f"El colaborador {colaborador_id} ya tiene un viaje registrado para hoy.")
 
-        # Calcular la distancia total del viaje
+        # Calcular la distancia total del viaje.
         distancia_total = 0
         for colaborador_id in colaboradores_ids:
             distancia = obtener_distancia_sucursal_colaborador(colaborador_id, sucursal_id)
@@ -55,15 +84,15 @@ def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids
             else:
                 raise ValueError(f"El colaborador {colaborador_id} no tiene asignada la sucursal {sucursal_id}.")
 
-        # Validar que la distancia total no supere los 100 km
+        # Validar que la distancia total no supere los 100 km.
         if distancia_total > 100:
             raise ValueError("La distancia total del viaje no puede superar los 100 km.")
 
-        # Insertar el viaje en la base de datos
+        # Insertar el viaje en la base de datos.
         viaje_id = registrar_viaje_db(fecha_actual, sucursal_id, transportista_id, usuario_id, distancia_total)
 
         if viaje_id:
-            # Asociar colaboradores al viaje
+            # Asociar colaboradores al viaje.
             asociar_colaboradores_a_viaje_db(viaje_id, colaboradores_ids)
 
             print("Viaje registrado correctamente.")
@@ -74,7 +103,7 @@ def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids
 
     except ValueError as e:
         print(f"Error de validación: {e}")
-        raise e  # Relanzar la excepción para que la interfaz la capture
+        raise e  # Relanzar la excepción para que la interfaz la capture.
     except sqlite3.Error as e:
         print(f"Error en la base de datos: {e}")
-        raise Exception(f"Error en la base de datos: {e}")  # Relanzar la excepción para que la interfaz la capture
+        raise Exception(f"Error en la base de datos: {e}")  # Relanzar la excepción para que la interfaz la capture.

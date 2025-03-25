@@ -1,4 +1,0 @@
-SQLite3
-Python 3.13
-tkinter
-tkcalendar

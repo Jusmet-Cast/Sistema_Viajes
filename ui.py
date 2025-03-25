@@ -4,15 +4,11 @@ from tkinter import messagebox
 import tkinter as tk
 
 #  Librerias locales.
+from trips import registrar_viaje, obtener_distancia_sucursal_colaborador
 from assignment import asignar_sucursal_a_colaborador, existe_asignacion
 from reports import generar_reporte_viajes, calcular_total_a_pagar
+from db import conectar_db, ejecutar_query
 from auth import verificar_credenciales
-from trips import registrar_viaje
-from db import (
-    conectar_db,
-    ejecutar_query,
-    obtener_distancia_sucursal_colaborador
-)
 
 
 #  Implementa la interfaz de login.
@@ -72,7 +68,7 @@ def mostrar_login():
         text="Iniciar Sesión",
         command=iniciar_sesion,  # Llama a la función para verricar credenciales.
         bg="green",  # Fondo verde.
-        fg="white"  # Texto white.
+        fg="white"  # Texto blanco.
     ).pack(side=tk.LEFT, padx=10)
 
     # Función para cerrar la ventana y salir.
@@ -89,6 +85,7 @@ def mostrar_login():
     ).pack(side=tk.LEFT, padx=10)
 
     ventana.mainloop()
+
 
 #  Implementa la interfaz del menu principal.
 def mostrar_menu_principal(usuario):
@@ -150,6 +147,7 @@ def mostrar_menu_principal(usuario):
     ).pack(side=tk.LEFT, padx=10)  # Alineación horizontal con espacio entre botones.
 
     ventana_menu.mainloop()
+
 
 #  Implementa la interfaz de la ventana para registrar viajes.
 def mostrar_registrar_viaje(usuario, ventana_menu):
@@ -283,7 +281,7 @@ def mostrar_registrar_viaje(usuario, ventana_menu):
                 messagebox.showerror("Error", error_msg)  # Mostrar el mensaje específico al usuario.
                 print(f"Error de validación: {error_msg}")  # Imprimir en la terminal.
             except Exception as e:
-                #  Capturar otros errores (errores de la base de datos)
+                #  Capturar otros errores (errores de la base de datos).
                 error_msg = f"Ocurrió un problema al registrar el viaje: {str(e)}"
                 messagebox.showerror("Error", error_msg)
                 print(f"Error: {error_msg}")  # Imprimir en la terminal.
@@ -318,6 +316,7 @@ def mostrar_registrar_viaje(usuario, ventana_menu):
         ventana_viaje.wait_window()
     else:
         messagebox.showerror("Error", "Usuario no autorizado.")
+
 
 #  Implementa la interfaz de la ventana para asignar sucursales.
 def mostrar_asignar_sucursal(ventana_menu):
@@ -474,12 +473,7 @@ def mostrar_reporte_viajes(ventana_menu):
 
     #  Función para generar el reporte.
     def generar_reporte(ventana_menu):
-        ventana_reporte.destroy()
         try:
-            # Validar que se hayan ingresado las fechas y seleccionado un transportista.
-            if not fecha_inicio.get() or not fecha_fin.get():
-                messagebox.showerror("Error", "Debe ingresar ambas fechas.")
-                return
             if not transportista_seleccionado.get():
                 messagebox.showerror("Error", "Debe seleccionar un transportista.")
                 return
@@ -496,6 +490,7 @@ def mostrar_reporte_viajes(ventana_menu):
 
             if reporte:
                 # Crear una nueva ventana para mostrar el reporte.
+                ventana_reporte.destroy()
                 ventana_resultados = tk.Toplevel()
                 ventana_resultados.title("Resultados del Reporte")
 
