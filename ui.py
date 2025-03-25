@@ -429,6 +429,7 @@ def mostrar_asignar_sucursal(ventana_menu):
     ventana_asignar.focus_set()
     ventana_asignar.wait_window()
 
+
 #  Implementa la interfaz de la ventana para generar reportes.
 def mostrar_reporte_viajes(ventana_menu):
     ventana_reporte = tk.Toplevel()  # Usar Toplevel para ventanas secundarias.
