@@ -2,23 +2,49 @@
 Aplicativo para automatizar el registro de viajes de colaboradores, 
 cálculo de pagos a transportistas y administración de sucursales.
 
+
 ## Requisitos
 - Python 3.13+
 - SQLite3 (viene con Python)
 - Librerías: Ver [requirements.txt](./requirements.txt)
 
-## Instalación
-1. Clona el repositorio:
-   ```bash
-    git clone https://github.com/Jusmet-Cast/Sistema_Viajes
+
+## Instalación y Configuración
+
+1.  **Crea y activa un entorno virtual (recomendado):**
+    ```bash
+    # Crea un entorno virtual llamado "venv"
+    python -m venv venv
+
+    # Activa el entorno virtual
+    # En Windows:
+    venv\Scripts\activate
+    # En macOS y Linux:
+    source venv/bin/activate
+    ```
+
+2.  **Clona el repositorio:**
+    ```bash
+    git clone [Sistema de Viajes](https://github.com/Jusmet-Cast/Sistema_Viajes)
+    ```
+
+3.  **Instala las dependencias:**
+    ```bash
     pip install -r requirements.txt
+    ```
+
+4.  **Ejecuta el programa:**
+    ```bash
     python main.py
+    ```
+
 
 ## Funcionalidades
 - Login de usuarios con roles (Gerente de tienda/empleado).
 - Asignación de sucursales a colaboradores.
 - Registro de viajes.
 - Reportes de pagos.
+
 
 ## Estructura Real del Proyecto
 - sistema_viajes/ \n
@@ -35,6 +61,7 @@ cálculo de pagos a transportistas y administración de sucursales.
 - ├── requirements.txt      # Dependencias
 - ├── trips.py              # Lógica de registro de viajes
 - └── ui.py                 # Interfaz gráfica (Tkinter)
+
 
 ## Modelo Entidad-Relación (ER)
 ![Diagrama ER](./db/er_diagram.png)  
