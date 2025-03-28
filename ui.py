@@ -177,6 +177,12 @@ def mostrar_registrar_viaje(usuario, ventana_menu):
         sucursal_seleccionada = tk.StringVar(ventana_viaje)
         transportista_seleccionado = tk.StringVar(ventana_viaje)
 
+        # Prueba en vivo
+        fecha_viaje = tk.StringVar(ventana_viaje)
+        tk.Label(frame_principal, text="Fecha de Viaje").pack(pady=5)
+        fecha_viaje_entry = DateEntry(frame_principal, textvariable=fecha_viaje, date_pattern="yyyy-mm-dd", width=12)
+        fecha_viaje_entry.pack(pady=5)
+
         #  Campo para seleccionar sucursal.
         tk.Label(frame_principal, text="Sucursal:").pack(pady=5)
         sucursal_menu = tk.OptionMenu(frame_principal, sucursal_seleccionada, *[f"{s[0]} - {s[1]}" for s in sucursales])
