@@ -89,7 +89,7 @@ def registrar_viaje(usuario_id, sucursal_id, transportista_id, colaboradores_ids
             raise ValueError("La distancia total del viaje no puede superar los 100 km.")
 
         # Insertar el viaje en la base de datos.
-        viaje_id = registrar_viaje_db(fecha_actual, sucursal_id, transportista_id, usuario_id, distancia_total)
+        viaje_id = registrar_viaje_db(fecha_viaje, sucursal_id, transportista_id, usuario_id, distancia_total)
 
         if viaje_id:
             # Asociar colaboradores al viaje.
